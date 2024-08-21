@@ -14,11 +14,23 @@ if (!isRunningRspack && !isRunningWebpack) {
  */
 const config = {
   mode: "development",
-  devtool: false,
+  devtool: 'source-map',
   entry: {
     main: "./src/index",
   },
-  plugins: [new HtmlWebpackPlugin()],
+  module: {
+    rules: [
+       {
+        test: /\.jsx?$/,
+        use: [
+          {
+            loader: isRunningWebpack ? "swc-loader" : "builtin:swc-loader",
+          },
+          "./loader.js",
+        ],
+      },
+    ],
+  },
   output: {
     clean: true,
     path: isRunningWebpack
